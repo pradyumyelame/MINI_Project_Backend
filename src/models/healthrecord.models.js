@@ -1,11 +1,7 @@
 import mongoose from "mongoose";
 
 const HealthRecordSchema = new mongoose.Schema({
-  record_id: {
-    type: mongoose.Schema.Types.ObjectId,  // Automatically generated unique identifier
-    index: true,
-    unique: true
-  },
+  
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',  // Foreign key to the Users collection
@@ -23,24 +19,24 @@ const HealthRecordSchema = new mongoose.Schema({
     type: [String],  // Array of treatments or actions to be taken
     required: true
   },
-  medication_history: [{
-    medication: {
-      type: String,
-      required: true
-    },
-    dosage: {
-      type: String,
-      required: true
-    },
-    start_date: {
-      type: Date,
-      required: true
-    },
-    end_date: {
-      type: Date,
-      required: true
-    }
-  }],
+  // medication_history: [{
+  //   medication: {
+  //     type: String,
+  //     required: true
+  //   },
+  //   dosage: {
+  //     type: String,
+  //     required: true
+  //   },
+  //   start_date: {
+  //     type: Date,
+  //     required: true
+  //   },
+  //   end_date: {
+  //     type: Date,
+  //     required: true
+  //   }
+  // }],
  doctor_notes: {
     type: [String],  // Array of notes from the doctor
     required: false

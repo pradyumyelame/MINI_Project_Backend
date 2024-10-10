@@ -1,17 +1,12 @@
-import mongoose from "mongoose";
+import mongoose,{Schema} from "mongoose";
 
 const SymptomCheckerSchema = new mongoose.Schema({
-  symptom_id: {
-    type: mongoose.Schema.Types.ObjectId,  // Automatically generated unique identifier
-    index: true,
-    unique: true
-  },
   user_id: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Schema.Types.ObjectId,
     ref: 'User',  // Foreign key referencing the Users (Patients)
     required: true
   },
-  user_input: {
+  symptoms: {
     type: [String],  // Array of symptoms entered by the user
     required: true
   },
@@ -23,14 +18,7 @@ const SymptomCheckerSchema = new mongoose.Schema({
     type: Number,  // Severity score based on AI analysis (e.g., scale 1-10)
     required: true
   },
-  created_at: {
-    type: Date,
-    default: Date.now
-  },
-  updated_at: {
-    type: Date,
-    default: Date.now
-  }
-});
+  
+},{timestamps:true});
 
 module.exports.SymptomChecker = mongoose.model('SymptomChecker', SymptomCheckerSchema);
