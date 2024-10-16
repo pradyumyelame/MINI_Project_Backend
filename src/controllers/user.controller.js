@@ -24,45 +24,28 @@ const generateAccessAndRefereshTokens = async(userId) =>{
 }
 
 const registerUser = asyncHandler( async (req, res) => {
-    // get user details from frontend
-    // validation - not empty
-    // check if user already exists: username, email
-    // check for images, check for avatar
-    // upload them to cloudinary, avatar
-    // create user object - create entry in db
-    // remove password and refresh token field from response
-    // check for user creation
-    // return res
-
-
-    const {name, email, username, password } = req.body
-    //console.log("email: ", email);
+    const {name, email, password } = req.body
 
     if (
-        [name, email, username, password].some((field) => field?.trim() === "")
+        [name, email, password].some((field) => field?.trim() === "")
     ) {
         throw new ApiError(400, "All fields are required")
     }
 
-    const existedUser = await User.findOne({
-        $or: [{ username }, { email }]
-    })
+    const existedUser = await User.findOne({ email })
 
     if (existedUser) {
         throw new ApiError(409, "User with email or username already exists")
     }
-    //console.log(req.files);
-
 
     const user = await User.create({
        name,
         email, 
         password,
-        username: username.toLowerCase()
     })
 
     const createdUser = await User.findById(user._id).select(
-        "-password -refreshToken"
+        "-password "
     )
 
     if (!createdUser) {
@@ -84,7 +67,7 @@ const loginUser = asyncHandler(async (req, res) =>{
     //send cookie
 
     const {email, username, password} = req.body
-    console.log(email);
+    // console.log(email);
 
     if (!username && !email) {
         throw new ApiError(400, "username or email is required")
@@ -159,6 +142,22 @@ const logoutUser = asyncHandler(async(req, res) => {
     .clearCookie("refreshToken", options)
     .json(new ApiResponse(200, {}, "User logged Out"))
 })
+
+// const getUserProfile = asyncHandler(async (req, res) => {
+//     const { userId } = req.params;
+
+//     const user = await User.findById(userId).select('fullName email phone address gender birthday avatar');
+
+//     if (!user) {
+//         throw new ApiError(404, 'User not found');
+//     }
+
+//     return res.status(200).json(new ApiResponse(200, user, 'User profile fetched successfully'));
+// });
+
+// module.exports = {
+//     getUserProfile,
+// };
 
 const refreshAccessToken = asyncHandler(async (req, res) => {
     const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken

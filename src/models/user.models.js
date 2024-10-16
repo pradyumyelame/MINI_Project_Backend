@@ -3,15 +3,6 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
 const userSchema = new mongoose.Schema({
-   
-    username:{
-      type: String,
-      required: true,
-      unique: true,
-      lowercase: true,
-      trim: true,
-      index: true
-    },
     password:{
       type:String,
       required:[true,"Password is required"],
@@ -30,12 +21,12 @@ const userSchema = new mongoose.Schema({
         match: [/^\S+@\S+\.\S+$/, 'Please provide a valid email address'],
         lowercase: true
     },
-    role:{
-        type: String,
-        enum: ["Patient","Doctor","Admin"],
-        default:"Patient",
-        // required: true
-    },
+    // role:{
+    //     type: String,
+    //     enum: ["Patient","Doctor","Admin"],
+    //     default:"Patient",
+    //     // required: true
+    // },
     gender: {
         type: String,
         enum: ['Male', 'Female', 'Other'],
